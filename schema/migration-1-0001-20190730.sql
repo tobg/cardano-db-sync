@@ -21,6 +21,9 @@ BEGIN
     -- Stake addresses???
     EXECUTE 'CREATE DOMAIN addr28type AS bytea CHECK (octet_length (VALUE) = 28);';
 
+	-- maxBound :: Word128 as a decimal has 39 digits.
+    EXECUTE 'CREATE DOMAIN word128type AS numeric (38, 0);';
+
     UPDATE "schema_version" SET stage_one = 1;
     RAISE NOTICE 'DB has been migrated to stage_one version %', next_version;
   END IF;
