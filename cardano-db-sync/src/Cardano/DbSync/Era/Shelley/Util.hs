@@ -54,6 +54,7 @@ import qualified Ouroboros.Network.Point as Point
 import qualified Shelley.Spec.Ledger.Address as Shelley
 import           Shelley.Spec.Ledger.Coin (Coin (..))
 import qualified Shelley.Spec.Ledger.Crypto as Shelley
+import qualified Shelley.Spec.Ledger.BaseTypes as Shelley
 import qualified Shelley.Spec.Ledger.BlockChain as Shelley
 import qualified Shelley.Spec.Ledger.Credential as Shelley
 import qualified Shelley.Spec.Ledger.Keys as Shelley
@@ -129,11 +130,14 @@ slotNumber :: ShelleyBlock -> Word64
 slotNumber =
   unSlotNo . Shelley.bheaderSlotNo . Shelley.bhbody . Shelley.bheader . Shelley.shelleyBlockRaw
 
-stakingCredHash :: ShelleyStakingCred -> ByteString
-stakingCredHash cred =
-  case cred of
-    Shelley.ScriptHashObj (Shelley.ScriptHash sh) -> Crypto.getHash sh
-    Shelley.KeyHashObj kh -> unKeyHashBS kh
+stakingCredHash :: DbSyncEnv -> ShelleyStakingCred -> ByteString
+stakingCredHash env cred =
+  let network =
+        case env of
+          ByronEnv -> Shelley.Mainnet -- Should not happen
+          ShelleyEnv nw -> nw
+  in Shelley.serialiseRewardAcnt $ Shelley.RewardAcnt network cred
+
 
 txDelegationCerts :: ShelleyTxBody -> [ShelleyDelegCert]
 txDelegationCerts txBody =

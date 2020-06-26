@@ -232,7 +232,7 @@ share
 
   -- -----------------------------------------------------------------------------------------------
 
-  Stake
+  Stake                 -- To be obtained from ledger state.
     addrId              StakeAddressId
     txId                TxId
     stake               Word64              sqltype=lovelace
