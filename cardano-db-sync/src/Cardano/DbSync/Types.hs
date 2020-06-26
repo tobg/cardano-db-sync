@@ -26,6 +26,8 @@ module Cardano.DbSync.Types
   , ShelleyTxOut
   , ShelleyTxSeq
   , SocketPath (..)
+  -- * Re-exports (we don't need 15 deps)
+  , Tip
   ) where
 
 import           Cardano.Db (MigrationDir (..))

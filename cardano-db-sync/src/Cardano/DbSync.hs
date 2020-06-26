@@ -18,6 +18,9 @@ module Cardano.DbSync
   , GenesisHash (..)
   , NetworkName (..)
   , SocketPath (..)
+  , DB.MigrationDir (..)
+
+  , getMigrationDir
 
   , defDbSyncNodePlugin
   , runDbSyncNode
@@ -117,6 +120,9 @@ import qualified System.Metrics.Prometheus.Metric.Gauge as Gauge
 
 data Peer = Peer SockAddr SockAddr deriving Show
 
+-- This is kind of hacky for now, but it simplifies deps.
+getMigrationDir :: DB.MigrationDir -> FilePath
+getMigrationDir (DB.MigrationDir migrationDir) = migrationDir
 
 runDbSyncNode :: DbSyncNodePlugin -> DbSyncNodeParams -> IO ()
 runDbSyncNode plugin enp =
