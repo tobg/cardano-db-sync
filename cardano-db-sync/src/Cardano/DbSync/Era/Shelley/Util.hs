@@ -14,7 +14,6 @@ module Cardano.DbSync.Era.Shelley.Util
   , mkSlotLeader
   , pointToSlotHash
   , renderHash
-  , rewardAccountHash
   , slotLeaderHash
   , slotNumber
   , stakingCredHash
@@ -56,9 +55,7 @@ import           Shelley.Spec.Ledger.Coin (Coin (..))
 import qualified Shelley.Spec.Ledger.Crypto as Shelley
 import qualified Shelley.Spec.Ledger.BaseTypes as Shelley
 import qualified Shelley.Spec.Ledger.BlockChain as Shelley
-import qualified Shelley.Spec.Ledger.Credential as Shelley
 import qualified Shelley.Spec.Ledger.Keys as Shelley
-import qualified Shelley.Spec.Ledger.Scripts as Shelley
 import qualified Shelley.Spec.Ledger.Tx as Shelley
 import qualified Shelley.Spec.Ledger.TxData as Shelley
 import qualified Shelley.Spec.Ledger.UTxO as Shelley
@@ -112,15 +109,6 @@ pointToSlotHash (Point x) =
 
 renderHash :: ShelleyHash -> Text
 renderHash = Text.decodeUtf8 . Base16.encode . unHeaderHash
-
-rewardAccountHash :: ShelleyRewardAccount -> ByteString
-rewardAccountHash ra =
-  case Shelley.getRwdCred ra of
-    Shelley.ScriptHashObj sh -> Crypto.getHash $ unScriptHash sh
-    Shelley.KeyHashObj kh -> unKeyHashBS kh
-  where
-    unScriptHash :: Shelley.ScriptHash crypto -> Shelley.Hash crypto (Shelley.Script crypto)
-    unScriptHash (Shelley.ScriptHash x) = x
 
 slotLeaderHash :: ShelleyBlock -> ByteString
 slotLeaderHash =
