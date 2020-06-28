@@ -34,6 +34,7 @@ import           Cardano.DbSync.Util
 import           Cardano.Slotting.Slot (EpochNo (..))
 
 import qualified Data.ByteString.Base16 as Base16
+import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy.Char8 as LBS
 import qualified Data.Map.Strict as Map
 import qualified Data.Text.Encoding as Text
@@ -57,6 +58,8 @@ insertShelleyBlock tracer env blk tip = do
     pbid <- liftLookupFail "insertShelleyBlock" $ DB.queryBlockId (Shelley.blockPrevHash blk)
 
     let slotsPerEpoch = DB.metaSlotsPerEpoch meta
+
+    liftIO . logInfo tracer $ "insertShelleyBlock: " <> textShow (BS.length . DB.slotLeaderHash $ Shelley.mkSlotLeader blk)
 
     slid <- lift . DB.insertSlotLeader $ Shelley.mkSlotLeader blk
     blkId <- lift . DB.insertBlock $
