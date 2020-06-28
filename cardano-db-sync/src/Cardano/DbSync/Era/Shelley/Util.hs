@@ -90,8 +90,9 @@ blockTxs =
 epochNumber :: ShelleyBlock -> Word64 -> Word64
 epochNumber blk slotsPerEpoch = slotNumber blk `div` slotsPerEpoch
 
+-- | This is both the Genesis Hash and the hash of the previous block.
 fakeGenesisHash :: ByteString
-fakeGenesisHash = BS.take 28 ("GenesisHash " <> BS.replicate 28 '\0')
+fakeGenesisHash = BS.take 32 ("GenesisHash " <> BS.replicate 32 '\0')
 
 mkSlotLeader :: ShelleyBlock -> Db.SlotLeader
 mkSlotLeader blk =
