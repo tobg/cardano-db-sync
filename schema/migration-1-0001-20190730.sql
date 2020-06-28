@@ -19,7 +19,7 @@ BEGIN
     EXECUTE 'CREATE DOMAIN hash28type AS bytea CHECK (octet_length (VALUE) = 28);';
 
     -- Stake addresses???
-    EXECUTE 'CREATE DOMAIN addr28type AS bytea CHECK (octet_length (VALUE) = 28);';
+    EXECUTE 'CREATE DOMAIN addr29type AS bytea CHECK (octet_length (VALUE) = 29);';
 
     UPDATE "schema_version" SET stage_one = 1;
     RAISE NOTICE 'DB has been migrated to stage_one version %', next_version;
